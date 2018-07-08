@@ -15,7 +15,8 @@
     "react-test-renderer": "~15.4.1"
   },
   "peerDependencies": {
-    "moment": "*",
+    "moment": "^2.22.1",
+    "moment-hijri": "^2.1.1",
     "react": "*",
     "react-native": "*"
   },

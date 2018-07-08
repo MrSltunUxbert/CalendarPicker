@@ -18,8 +18,9 @@ export default function HeaderControls(props) {
     previousTitle,
     nextTitle,
     textStyle,
+    hijri,
   } = props;
-  const MONTHS = months? months : Utils.MONTHS; // English Month Array
+  const MONTHS = months? months : Utils.MONTHS(hijri); // English Month Array
   // getMonth() call below will return the month number, we will use it as the
   // index for month array in english
   const previous = previousTitle ? previousTitle : 'Previous';
@@ -55,4 +56,5 @@ HeaderControls.propTypes = {
   currentYear: PropTypes.number,
   onPressNext: PropTypes.func,
   onPressPrevious: PropTypes.func,
+  hijri: PropTypes.bool,
 };

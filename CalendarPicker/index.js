@@ -11,7 +11,8 @@ import HeaderControls from './HeaderControls';
 import Weekdays from './Weekdays';
 import DaysGridView from './DaysGridView';
 import Swiper from './Swiper';
-import moment from 'moment';
+import moment from 'moment-hijri';
+import arLocale from 'moment/locale/ar-sa'
 
 const SWIPE_LEFT = 'SWIPE_LEFT';
 const SWIPE_RIGHT = 'SWIPE_RIGHT';
@@ -39,6 +40,7 @@ export default class CalendarPicker extends Component {
     this.handleOnPressNext = this.handleOnPressNext.bind(this);
     this.handleOnPressDay = this.handleOnPressDay.bind(this);
     this.onSwipe = this.onSwipe.bind(this);
+    moment.locale(props.arabic ? 'ar-sa' : 'en');
   }
 
   static defaultProps = {
@@ -46,6 +48,8 @@ export default class CalendarPicker extends Component {
     scaleFactor: 375,
     enableSwipe: true,
     onDateChange: () => { console.log('onDateChange() not provided') },
+    arabic: false,
+    hijri: false,
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -100,8 +104,8 @@ export default class CalendarPicker extends Component {
 
   updateMonthYear(initialDate = this.props.initialDate) {
     return {
-      currentMonth: parseInt(moment(initialDate).month()),
-      currentYear: parseInt(moment(initialDate).year()),
+      currentMonth: parseInt(this.props.hijri ? moment(initialDate).iMonth() : moment(initialDate).month()),
+      currentYear: parseInt(this.props.hijri ? moment(initialDate).iYear() : moment(initialDate).year()),
     };
   }
 
@@ -116,9 +120,10 @@ export default class CalendarPicker extends Component {
     const {
       allowRangeSelection,
       onDateChange,
+      hijri,
     } = this.props;
 
-    const date = moment({year: currentYear, month: currentMonth, day});
+    const date = moment(`${currentYear}/${currentMonth + 1}/${day}`, hijri ? 'iYYYY/iMM/iDD' : 'YYYY/MM/DD');
 
     if (allowRangeSelection &&
       selectedStartDate &&
@@ -157,7 +162,7 @@ export default class CalendarPicker extends Component {
         currentYear: parseInt(currentYear),
       });
     }
-    this.props.onMonthChange && this.props.onMonthChange(moment({year: currentYear, month: previousMonth}));
+    this.props.onMonthChange && this.props.onMonthChange(moment(`${currentYear}/${previousMonth + 1}`, this.props.hijri ? 'iYYYY/iMM' : 'YYYY/MM'));
   }
 
   handleOnPressNext() {
@@ -178,7 +183,7 @@ export default class CalendarPicker extends Component {
         currentYear: parseInt(currentYear),
       });
     }
-    this.props.onMonthChange && this.props.onMonthChange(moment({year: currentYear, month: nextMonth}));
+    this.props.onMonthChange && this.props.onMonthChange(moment(`${currentYear}/${nextMonth + 1}`, this.props.hijri ? 'iYYYY/iMM' : 'YYYY/MM'));
   }
 
   onSwipe(gestureName) {
@@ -229,6 +234,8 @@ export default class CalendarPicker extends Component {
       maxRangeDuration,
       swipeConfig,
       customDatesStyles,
+      weekdaysWrapperStyles,
+      hijri,
     } = this.props;
 
     let disabledDatesTime = [];
@@ -277,6 +284,7 @@ export default class CalendarPicker extends Component {
       >
         <View syles={styles.calendar}>
           <HeaderControls
+            hijri={hijri}
             styles={styles}
             currentMonth={currentMonth}
             currentYear={currentYear}
@@ -293,8 +301,10 @@ export default class CalendarPicker extends Component {
             startFromMonday={startFromMonday}
             weekdays={weekdays}
             textStyle={textStyle}
+            weekdaysWrapperStyles={weekdaysWrapperStyles}
           />
           <DaysGridView
+            hijri={hijri}
             month={currentMonth}
             year={currentYear}
             styles={styles}

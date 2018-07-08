@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { Utils } from './Utils';
-import moment from 'moment';
+import moment from 'moment-hijri';
 
 export default function Day(props) {
   const {
@@ -30,9 +30,10 @@ export default function Day(props) {
     disabledDates,
     minRangeDuration,
     maxRangeDuration,
+    hijri,
   } = props;
 
-  const thisDay = moment({year, month, day});
+  const thisDay = moment(`${year}/${month+1}/${day}`, hijri ? 'iYYYY/iMM/iDD' : 'YYYY/MM/DD');
   const today = moment();
 
   let dateOutOfRange;
@@ -181,6 +182,7 @@ export default function Day(props) {
 
 Day.defaultProps = {
   customDatesStyles: [],
+  hijri: false,
 }
 
 Day.propTypes = {
@@ -190,4 +192,5 @@ Day.propTypes = {
   disabledDates: PropTypes.array,
   minRangeDuration: PropTypes.oneOfType([PropTypes.array, PropTypes.number]),
   maxRangeDuration: PropTypes.oneOfType([PropTypes.array, PropTypes.number]),
+  hijri: PropTypes.bool,
 }
