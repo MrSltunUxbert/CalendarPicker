@@ -16,7 +16,9 @@ export default function HeaderControls(props) {
     onPressPrevious,
     months,
     previousTitle,
+    previousComponent,
     nextTitle,
+    nextComponent,
     textStyle,
     hijri,
   } = props;
@@ -31,6 +33,7 @@ export default function HeaderControls(props) {
   return (
     <View style={styles.headerWrapper}>
       <Controls
+        component={previousComponent}
         label={previous}
         onPressControl={onPressPrevious}
         styles={[styles.monthSelector, styles.prev]}
@@ -42,6 +45,7 @@ export default function HeaderControls(props) {
         </Text>
       </View>
       <Controls
+        component={nextComponent}
         label={next}
         onPressControl={onPressNext}
         styles={[styles.monthSelector, styles.next]}
