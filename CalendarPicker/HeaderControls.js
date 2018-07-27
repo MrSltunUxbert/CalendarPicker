@@ -39,7 +39,7 @@ export default function HeaderControls(props) {
         styles={[styles.monthSelector, styles.prev]}
         textStyles={textStyle}
       />
-      <View>
+      <View style={{flex: 1, alignItems: 'center'}}>
         <Text style={[styles.monthLabel, textStyle]}>
            { month } { year }
         </Text>

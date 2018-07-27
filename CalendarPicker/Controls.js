@@ -8,10 +8,10 @@ import PropTypes from 'prop-types';
 export default function Controls({ styles, textStyles, label, onPressControl, component }) {
   return (
     <TouchableOpacity
+      style={{ marginHorizontal: 20 }}
       onPress={() => onPressControl()}
     >
-    {component ? 
-      component : (
+    { component || (
         <Text style={[styles, textStyles]}>
           { label }
         </Text>
